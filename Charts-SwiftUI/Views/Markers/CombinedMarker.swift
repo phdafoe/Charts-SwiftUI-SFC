@@ -187,7 +187,6 @@ open class CombinedMarker: MarkerImage
     
     open override func refreshContent(entry: ChartDataEntry, highlight: Highlight) {
         // This is the bubble text
-        let months = Sale.monthsToDisplayForQuarter(quarter)
         setLabel("\(Int(entry.y)) €")
     }
     
