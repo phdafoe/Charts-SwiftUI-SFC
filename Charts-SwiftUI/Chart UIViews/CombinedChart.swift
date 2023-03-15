@@ -30,18 +30,13 @@ struct CombinedChart: UIViewRepresentable {
         let data = CombinedChartData()
         data.lineData = lineChartData
         combinedChart.data = data
-        //combinedChart.chartDescription?.isEnabled = false
-        lineDataSet.colors = [.blue]
-        lineDataSet.lineWidth = 1.5
-        lineDataSet.setCircleColor(.blue)
+        formatLineChartDataSet(lineDataSet)
     }
     
     func configureChart(_ combinedChart: CombinedChartView) {
-        //combinedChart.noDataText = "No Data"
-        //combinedChart.descrription is enable -> OCulta el data set
+        combinedChart.legend.enabled = false
         combinedChart.drawValueAboveBarEnabled = false
         combinedChart.setScaleEnabled(false)
-        combinedChart.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInOutBounce)
         if combinedChart.scaleX == 1.0 && quarter == 0 {
             combinedChart.zoom(scaleX: 1.5, scaleY: 1, x: 0, y: 0)
         } else {
@@ -56,12 +51,18 @@ struct CombinedChart: UIViewRepresentable {
         combinedChart.marker = marker
     }
     
+    func formatLineChartDataSet(_ lineDataSet: LineChartDataSet) {
+        lineDataSet.colors = [.blue]
+        lineDataSet.lineWidth = 2.5
+        lineDataSet.setCircleColor(.blue)
+        lineDataSet.axisDependency = .right
+    }
+    
     func formatXAxis(_ xAxis: XAxis) {
         xAxis.gridLineDashLengths = [2]
         xAxis.labelPosition = .bottom
         xAxis.axisMinimum = -0.5
         xAxis.axisMaximum = Double(lineEntries.count) + 0.5
-        xAxis.granularity = 2
         xAxis.valueFormatter = IndexAxisValueFormatter(values: Sale.monthsToDisplayForQuarter(quarter))
         xAxis.labelTextColor =  UIColor.label
         xAxis.drawAxisLineEnabled = false
@@ -71,13 +72,12 @@ struct CombinedChart: UIViewRepresentable {
         leftAxis.gridLineDashLengths = [2]
         leftAxis.drawAxisLineEnabled = false
         leftAxis.axisMinimum = 0.5
-        leftAxis.axisMaximum = (lineEntries.map{$0.y}.max() ?? 0) + 20
+        leftAxis.axisMaximum = (lineEntries.map{$0.y}.max() ?? 0) + 10
         leftAxis.labelTextColor =  .gray
     }
     
     func formatRightAxis(_ rightAxis: YAxis) {
         rightAxis.enabled = false
-        rightAxis.drawAxisLineEnabled = false
     }
 
 
