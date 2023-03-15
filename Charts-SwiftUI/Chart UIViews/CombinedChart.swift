@@ -19,6 +19,8 @@ struct CombinedChart: UIViewRepresentable {
         setChartData(uiView)
         configureChart(uiView)
         formatXAxis(uiView.xAxis)
+        formatLeftAxis(uiView.leftAxis)
+        formatRightAxis(uiView.rightAxis)
         uiView.notifyDataSetChanged()
     }
     
@@ -28,13 +30,15 @@ struct CombinedChart: UIViewRepresentable {
         let data = CombinedChartData()
         data.lineData = lineChartData
         combinedChart.data = data
+        //combinedChart.chartDescription?.isEnabled = false
         lineDataSet.colors = [.blue]
         lineDataSet.lineWidth = 1.5
         lineDataSet.setCircleColor(.blue)
     }
     
     func configureChart(_ combinedChart: CombinedChartView) {
-        combinedChart.noDataText = "No Data"
+        //combinedChart.noDataText = "No Data"
+        //combinedChart.descrription is enable -> OCulta el data set
         combinedChart.drawValueAboveBarEnabled = false
         combinedChart.setScaleEnabled(false)
         combinedChart.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInOutBounce)
@@ -53,15 +57,29 @@ struct CombinedChart: UIViewRepresentable {
     }
     
     func formatXAxis(_ xAxis: XAxis) {
+        xAxis.gridLineDashLengths = [2]
         xAxis.labelPosition = .bottom
         xAxis.axisMinimum = -0.5
-        xAxis.axisMaximum = Double(lineEntries.count) + 2
+        xAxis.axisMaximum = Double(lineEntries.count) + 0.5
         xAxis.granularity = 2
-        xAxis.gridColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 0.5)
         xAxis.valueFormatter = IndexAxisValueFormatter(values: Sale.monthsToDisplayForQuarter(quarter))
         xAxis.labelTextColor =  UIColor.label
+        xAxis.drawAxisLineEnabled = false
     }
     
+    func formatLeftAxis(_ leftAxis: YAxis) {
+        leftAxis.gridLineDashLengths = [2]
+        leftAxis.drawAxisLineEnabled = false
+        leftAxis.axisMinimum = 0.5
+        leftAxis.axisMaximum = (lineEntries.map{$0.y}.max() ?? 0) + 20
+        leftAxis.labelTextColor =  .gray
+    }
+    
+    func formatRightAxis(_ rightAxis: YAxis) {
+        rightAxis.enabled = false
+        rightAxis.drawAxisLineEnabled = false
+    }
+
 
 
 }
