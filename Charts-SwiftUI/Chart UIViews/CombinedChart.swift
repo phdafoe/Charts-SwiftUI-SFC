@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CombinedChart: UIViewRepresentable {
     var lineEntries : [ChartDataEntry]
+    var average: Double
     @Binding var quarter: Int
     func makeUIView(context: Context) -> CombinedChartView {
         return CombinedChartView()
@@ -66,6 +67,7 @@ struct CombinedChart: UIViewRepresentable {
         xAxis.valueFormatter = IndexAxisValueFormatter(values: Sale.monthsToDisplayForQuarter(quarter))
         xAxis.labelTextColor =  UIColor.label
         xAxis.drawAxisLineEnabled = false
+        xAxis.granularity = 1
     }
     
     func formatLeftAxis(_ leftAxis: YAxis) {
@@ -74,6 +76,14 @@ struct CombinedChart: UIViewRepresentable {
         leftAxis.axisMinimum = 0.5
         leftAxis.axisMaximum = (lineEntries.map{$0.y}.max() ?? 0) + 10
         leftAxis.labelTextColor =  .gray
+        
+        let ll1 = ChartLimitLine(limit: average, label: "\(average) €") // Promedio ojo con este valor
+        ll1.lineWidth = 1
+        ll1.lineDashLengths = [3]
+        ll1.labelPosition = .topLeft
+        ll1.valueFont = .systemFont(ofSize: 10)
+        ll1.lineColor = .gray
+        leftAxis.addLimitLine(ll1)
     }
     
     func formatRightAxis(_ rightAxis: YAxis) {
@@ -88,6 +98,6 @@ struct CombinedChart: UIViewRepresentable {
 
 struct CombinedChart_Previews: PreviewProvider {
     static var previews: some View {
-        CombinedChart(lineEntries: Sale.TransactionsFor(Sale.allSales, quarter: 0), quarter: .constant(0))
+        CombinedChart(lineEntries: Sale.TransactionsFor(Sale.allSales, quarter: 0), average: 70, quarter: .constant(0))
     }
 }

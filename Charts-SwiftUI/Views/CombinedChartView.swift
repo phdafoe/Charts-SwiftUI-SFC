@@ -14,7 +14,7 @@ struct CombinedChrtView: View {
         Group{
             VStack {
                 HStack(alignment: .top){
-                    Text("Evolución")
+                    Text("Evolución 22-23")
                         .font(.title3)
                     Spacer()
                     VStack(alignment: .leading){
@@ -31,8 +31,10 @@ struct CombinedChrtView: View {
                         }
                     }
                 }
-            CombinedChart(lineEntries: Sale.TransactionsFor(Sale.allSales, quarter: quarter),
-                          quarter: $quarter)
+                CombinedChart(lineEntries: Sale.TransactionsFor(Sale.allSales,
+                                                                quarter: quarter),
+                              average: 300,
+                              quarter: $quarter)
                 .frame(height: 400)
             }.padding(.horizontal)
         }

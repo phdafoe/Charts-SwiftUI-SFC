@@ -58,7 +58,7 @@ struct Sale {
     
     
     static func monthsToDisplayForQuarter(_ quarter: Int) -> [String] {
-        let months =  ["Ene 22","Feb 22","Mar 22","Abr 22","May 22","Jun 22", "Jul 22", "Ago 22", "Sep 22", "Oct 22", "Nov 22", "Dic 22"]
+        let months =  ["Ene","Feb","Mar","Abr","May","Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
         switch quarter {
         case 0:
             return months
@@ -87,7 +87,6 @@ struct Sale {
             Sale(month: .oct, units: 200, transaction: 678),
             Sale(month: .nov, units: 45, transaction: 45),
             Sale(month: .dec, units: 100, transaction: 678.7)
-            
         ]
     }
     
